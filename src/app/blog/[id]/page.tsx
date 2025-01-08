@@ -3,7 +3,14 @@ import { client } from '@/sanity/lib/client'
 import React from 'react'
 import Image from 'next/image'
 
-const CardDetail = async ({params}:{params:{text:string}}) => {
+interface Tblog{
+  heading:"srting";
+  paragraph:"string";
+  imageUrl:"string"
+  _id:"string"
+}
+
+const CardDetail = async ({params}:{params:{id:string}}) => {
    const data = await client.fetch(`*[_type == "blogweb"]{
   heading,
   paragraph,
@@ -11,8 +18,9 @@ const CardDetail = async ({params}:{params:{text:string}}) => {
   _id
 }`)
    
-const blogData = data.filter((post:any)=>post.id == params.text)
+const blogData = data.filter((post:Tblog)=>post._id == params.id)
     
+    console.log(data);
     
   return (
     <div>
@@ -20,7 +28,7 @@ const blogData = data.filter((post:any)=>post.id == params.text)
         {/* Blog Content */}
         <div className="w-full md:w-[60%] text-left flex flex-col gap-5">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800">
-            -{blogData[0]?.heading}
+            {blogData[0]?.heading}
           </h1>
           <p className="text-[14px] sm:text-[16px] md:text-[17px] text-slate-700">
             {blogData[0]?.paragraph}

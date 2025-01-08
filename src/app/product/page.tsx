@@ -2,7 +2,12 @@ import React from 'react'
 import { client } from '@/sanity/lib/client'
 import Image from 'next/image';
 
-
+interface Tproduct{
+  productName:string;
+  productPrice:number;
+  imageUrl:string;
+  _id:string
+}
 
 const Product = async () => {
   const data = await client.fetch(`*[_type == "product"]{
@@ -11,12 +16,12 @@ const Product = async () => {
   "imageUrl": productImage.asset->url,
   _id
 }`);
-  console.log(data)
+  
   return (
     <div>
         <h1 className='text-2xl text-center'>Product Page</h1>
         <div className='flex justify-evenly mt-20 '>
-        {data.map((item:any)=>(
+        {data.map((item:Tproduct)=>(
           <div key={item._id} className='w-40 h-52'>
             <Image src={item.imageUrl} alt={item.productName} width={100} height={200} className=' w-40 h-60' />
             <h1 className='mt-4'>{item.productName}</h1>
